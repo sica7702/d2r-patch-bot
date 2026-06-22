@@ -17,7 +17,8 @@ latest = items[0]["properties"]
 title = latest["title"]
 url = latest["newsUrl"]
 summary = latest.get("summary", "").strip()
-date = latest.get("lastUpdated", "")
+raw_date = latest.get("lastUpdated", "")
+date = raw_date[:10].replace("-", ".") if raw_date else ""
 
 old_url = ""
 
