@@ -27,7 +27,7 @@ if os.path.exists(STATE_FILE):
         old_url = f.read().strip()
 
 if url != old_url:
-    message = f"""🌙 루나봇이 새로운 소식을 들고왔어요!
+    message = f"""🌙 루나봇이 새로운 소식을 전해드립니다.
 
 **{title}**
 
