@@ -1,30 +1,36 @@
 import requests
 import os
+from bs4 import BeautifulSoup
 
 WEBHOOK = os.environ["DISCORD_WEBHOOK"]
 
-url = "https://news.blizzard.com/ko-kr/diablo2"
+URL = "https://news.blizzard.com/ko-kr/diablo2"
 
-try:
-    r = requests.get(url, timeout=30)
+TITLE_FILE = "last_title.txt"
+
+html = requests.get(URL, timeout=30).text
+
+soup = BeautifulSoup(html, "html.parser")
+
+title = soup.title.text.strip()
+
+old_title = ""
+
+if os.path.exists(TITLE_FILE):
+    with open(TITLE_FILE, "r", encoding="utf-8") as f:
+        old_title = f.read().strip()
+
+if title != old_title:
 
     requests.post(
         WEBHOOK,
         json={
-            "content": f"📢 D2R 패치노트 확인 완료\n{url}\n상태코드: {r.status_code}"
+            "content": f"📢 D2R 새 소식 감지!\n\n{title}\n{URL}"
         },
-        timeout=30
+        timeout=30,
     )
 
-    print("Success")
+    with open(TITLE_FILE, "w", encoding="utf-8") as f:
+        f.write(title)
 
-except Exception as e:
-    requests.post(
-        WEBHOOK,
-        json={
-            "content": f"❌ 오류 발생\n{e}"
-        },
-        timeout=30
-    )
-
-    raise
+print("Done")
