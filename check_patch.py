@@ -27,7 +27,7 @@ if os.path.exists(STATE_FILE):
         old_url = f.read().strip()
 
 if url != old_url:
-    message = f"""📢 새 D2R 공지 감지!
+    message = f"""🌙 루나봇이 새로운 소식을 들고왔어요!
 
 **{title}**
 
